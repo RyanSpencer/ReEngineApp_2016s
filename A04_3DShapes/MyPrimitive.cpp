@@ -30,6 +30,12 @@ void MyPrimitive::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopRight);
 }
+void MyPrimitive::AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vCenter)
+{
+	AddVertexPosition(a_vBottomLeft);
+	AddVertexPosition(a_vBottomRight);
+	AddVertexPosition(a_vCenter);
+}
 void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)
@@ -110,16 +116,38 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float fValue = 0.5f * a_fHeight; //height 
+	float gValue = 0.5f * a_fRadius; //radius
 
-	AddQuad(point0, point1, point3, point2);
+	//point array for n gon on the bottom of the cone
+	vector3* points = new vector3[a_nSubdivisions];
+
+	//Top point of the cone
+	vector3 point0(0.0f, fValue, 0.0f);
+
+	//Center of the n gon
+	vector3 pointCenter(0.0f, -fValue, 0.0f);
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		//Create points around the n gon by using sin and cosine functions
+		//http://stackoverflow.com/questions/7198144/how-to-draw-a-n-sided-regular-polygon-in-cartesian-coordinates
+		points[i] = vector3(gValue * cos((2 * PI * i) / a_nSubdivisions), -fValue, gValue * sin((2* PI * i ) /a_nSubdivisions ));
+	}
+	
+	for (int i = 0; i < a_nSubdivisions - 1; i++) {
+		//Create the triangle
+		AddTri(points[i], points[i + 1], pointCenter);
+		AddTri(points[i + 1], points[i], point0);
+	}
+
+	//The last triangle on the n gon always goes from the end to the beginning
+	AddTri(points[a_nSubdivisions - 1], points[0], pointCenter);
+
+	//Similarly for the last side traingle
+	AddTri(points[0], points[a_nSubdivisions - 1], point0);
+	
+	//Don't forget to delete your new arrays
+	delete[] points;
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -135,16 +163,43 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float fValue = 0.5f * a_fHeight; //height 
+	float gValue = 0.5f * a_fRadius; //radius
 
-	AddQuad(point0, point1, point3, point2);
+	//point array for n gon on the bottom of the cylinder and top
+	vector3* points = new vector3[a_nSubdivisions];
+	vector3* points2 = new vector3[a_nSubdivisions];
+
+	//Center of both n gons
+	vector3 pointCenter(0.0f, -fValue, 0.0f);
+	vector3 pointCenter2(0.0f, fValue, 0.0f);
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		//Create points around the n gons by using sin and cosine functions
+		//http://stackoverflow.com/questions/7198144/how-to-draw-a-n-sided-regular-polygon-in-cartesian-coordinates
+		points[i] = vector3(gValue * cos((2 * PI * i) / a_nSubdivisions), -fValue, gValue * sin((2 * PI * i) / a_nSubdivisions));
+		points2[i] = vector3(gValue * cos((2 * PI * i) / a_nSubdivisions), fValue, gValue * sin((2 * PI * i) / a_nSubdivisions));
+
+	}
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++) {
+		AddTri(points[i], points[i + 1], pointCenter);
+
+		AddTri(points2[i + 1], points2[i], pointCenter2);
+		//Add the quad on the side of the cylinder as you build the first n gon
+		AddQuad(points[i + 1], points[i], points2[i + 1], points2[i]);
+	}
+	//The last triangle on the n gon always goes from the end to the beginning
+	AddTri(points[a_nSubdivisions - 1], points[0], pointCenter);
+	AddTri(points2[0], points2[a_nSubdivisions - 1], pointCenter2);
+
+	//Build the last two quads to finish up the cylinder sides for the same reason as the n gon
+	AddQuad(points[0],  points[a_nSubdivisions - 1], points2[0], points2[a_nSubdivisions - 1]);
+
+	//Don't forget to delete your new arrays
+	delete[] points;
+	delete[] points2;
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -160,16 +215,41 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float fValue = 0.5f * a_fOuterRadius;
+	float gValue = 0.5f * a_fInnerRadius; 
+	float hValue = 0.5f * a_fHeight;
 
-	AddQuad(point0, point1, point3, point2);
+	//point array for n gon
+	vector3* points = new vector3[a_nSubdivisions]; //Top of tube outer
+	vector3* points2 = new vector3[a_nSubdivisions]; // top of tube inner
+	vector3* points3 = new vector3[a_nSubdivisions];// bottom of tube outer
+	vector3* points4 = new vector3[a_nSubdivisions];// bottom of tuber inner
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		//Create points around the n gons by using sin and cosine functions
+		//http://stackoverflow.com/questions/7198144/how-to-draw-a-n-sided-regular-polygon-in-cartesian-coordinates
+		points[i] = vector3(fValue * cos((2 * PI * i) / a_nSubdivisions), hValue, fValue * sin((2 * PI * i) / a_nSubdivisions));
+		points2[i] = vector3(gValue * cos((2 * PI * i) / a_nSubdivisions), hValue, gValue * sin((2 * PI * i) / a_nSubdivisions));
+		points3[i] = vector3(fValue * cos((2 * PI * i) / a_nSubdivisions), -hValue, fValue * sin((2 * PI * i) / a_nSubdivisions));
+		points4[i] = vector3(gValue * cos((2 * PI * i) / a_nSubdivisions), -hValue, gValue * sin((2 * PI * i) / a_nSubdivisions));
+	}
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++) {
+		AddQuad(points[i + 1], points[i], points2[i+ 1], points2[i]); //Top of the tube
+		AddQuad(points3[i], points3[i + 1], points4[i], points4[i + 1]); //Bottom of the tube
+		AddQuad(points[i], points[i + 1], points3[i], points3[i + 1]); //Outside of the tube
+		AddQuad(points2[i + 1], points2[i], points4[i + 1], points4[i]); //Inside of the tube
+	}
+
+	AddQuad(points[0], points[a_nSubdivisions - 1], points2[0], points2[a_nSubdivisions - 1]); // finish top of the tube
+	AddQuad(points3[a_nSubdivisions - 1], points3[0], points4[a_nSubdivisions - 1], points4[0]); //finish bottom of the tube
+	AddQuad(points[a_nSubdivisions - 1], points[0], points3[a_nSubdivisions - 1], points3[0]); //finish outside of the tube
+	AddQuad(points2[0], points2[a_nSubdivisions - 1], points4[0], points4[a_nSubdivisions - 1]); //finish inside of the tube
+
+	delete[] points;
+	delete[] points2;
+	delete[] points3;
+	delete[] points4;
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -193,16 +273,28 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float fValue = 0.5f * a_fOuterRadius; //Outer Radius
+	float gValue = 0.5f * a_fInnerRadius; // Inner Radius
 
-	AddQuad(point0, point1, point3, point2);
+	float r = fValue - gValue; //Outer - inner
+	float R = gValue + r; // inner + the differencce
+
+	for (int i = 0; i < a_nSubdivisionsA; i++) {
+		float pL = 2 * PI * i / a_nSubdivisionsA; // Angle of Phi left
+		float pR = 2 * PI * (i + 1) / a_nSubdivisionsA; // Angle of Phi Right
+		for (int j = 0; j < a_nSubdivisionsB; j++) {
+			float tL = 2 * PI * j / a_nSubdivisionsB; // Angle of Theta Left
+			float tR = 2 * PI * (j + 1) / a_nSubdivisionsB; // Angle of Theta Right
+
+			vector3 p1((R + r * cos(tL)) * cos(pL), r * sin(tL), (R + r * cos(tL)) * sin(pL)); //First point
+			vector3 p2((R + r * cos(tL)) * cos(pR), r * sin(tL), (R + r * cos(tL)) * sin(pR)); //Second point
+			vector3 p3((R + r * cos(tR)) * cos(pL), r * sin(tR), (R + r * cos(tR)) * sin(pL)); //Third Point
+			vector3 p4((R + r * cos(tR)) * cos(pR), r * sin(tR), (R + r * cos(tR)) * sin(pR)); //Fourth Point
+
+			AddQuad(p2, p1, p4, p3);
+		}
+	}
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -222,16 +314,23 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float fValue = 0.5f * a_fRadius; //Radius
 
-	AddQuad(point0, point1, point3, point2);
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		float pL = PI * i / a_nSubdivisions;  // Angle of Phi left (only on rotation of zero - PI)
+		float pR = PI * (i + 1) / a_nSubdivisions; // Angle of PHi Right
+		for (int j = 0; j < a_nSubdivisions; j++) {
+			float tL = 2 * PI * j / a_nSubdivisions;  // Angle of Theta left
+			float tR = 2 * PI * (j + 1) / a_nSubdivisions; //  // Angle of Theta left
+		
+			vector3 p1(fValue * cos(tL) * sin(pL), fValue * cos(pL), fValue * sin(tL) * sin(pL));//First point
+			vector3 p2(fValue * cos(tL) * sin(pR), fValue * cos(pR), fValue * sin(tL) * sin(pR));//Second point
+			vector3 p3(fValue * cos(tR) * sin(pL), fValue * cos(pL), fValue * sin(tR) * sin(pL));//Third point
+			vector3 p4(fValue * cos(tR) * sin(pR), fValue * cos(pR), fValue * sin(tR) * sin(pR));//Forth point
+
+			AddQuad(p1, p2, p3, p4);
+		}
+ 	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
