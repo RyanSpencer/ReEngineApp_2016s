@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_Basics.vcxproj", "{425ED9DA-852E-4F61-BE06-487F68A6187E}"
 EndProject
@@ -40,6 +40,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{30329165-8C18-46CB-A4F4-A05ADB2AE1DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05_Repository", "E05_Repository\E05_Repository.vcxproj", "{D3CFCD8E-8F26-47DD-A937-371FBD3DB991}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Transformations", "E06_Transformations\E06_Transformations.vcxproj", "{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05s_Repository", "E05s_Repository\E05s_Repository.vcxproj", "{2DD9F919-629E-43B6-9B81-181B2F761873}"
@@ -47,6 +48,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A05_Transformations", "A05_Transformations\A05_Transformations.vcxproj", "{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A04s_3DShapes_DEMO", "A04s_3DShapes\A04s_3DShapes.vcxproj", "{1249A06E-032E-4611-8749-E48CB5FCFF68}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Lerp", "E06_Lerp\E06_Lerp.vcxproj", "{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +121,10 @@ Global
 		{1249A06E-032E-4611-8749-E48CB5FCFF68}.Debug|x86.Build.0 = Debug|Win32
 		{1249A06E-032E-4611-8749-E48CB5FCFF68}.Release|x86.ActiveCfg = Release|Win32
 		{1249A06E-032E-4611-8749-E48CB5FCFF68}.Release|x86.Build.0 = Release|Win32
+		{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}.Debug|x86.ActiveCfg = Debug|Win32
+		{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}.Debug|x86.Build.0 = Debug|Win32
+		{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}.Release|x86.ActiveCfg = Release|Win32
+		{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
