@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-<<<<<<< HEAD
-VisualStudioVersion = 14.0.24720.0
-=======
 VisualStudioVersion = 14.0.25420.1
->>>>>>> upstream/master
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_Basics.vcxproj", "{425ED9DA-852E-4F61-BE06-487F68A6187E}"
 EndProject
@@ -53,9 +49,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A05_Transformations", "A05_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A04s_3DShapes_DEMO", "A04s_3DShapes\A04s_3DShapes.vcxproj", "{1249A06E-032E-4611-8749-E48CB5FCFF68}"
 EndProject
-<<<<<<< HEAD
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Lerp", "E06_Lerp\E06_Lerp.vcxproj", "{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}"
-=======
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{2D1B6711-5C2F-40D1-81B0-C84AEDAA4353}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "W5R_Rotations_DEMO", "W5R_Rotations_DEMO\W5R_Rotations_DEMO.vcxproj", "{DBB63B9E-3E43-4E40-8601-29BE9FAC2ABD}"
@@ -67,7 +60,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E09_Gimbal_Lock", "E09_Gimbal Lock\E09_Gimbal Lock.vcxproj", "{1526B5D0-627C-4057-91F9-4D7289CB8CFE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E07_LERP", "E07s_LERP\E07s_LERP.vcxproj", "{F2B4B292-2881-40EA-A091-57D14FB1AE05}"
->>>>>>> upstream/master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
