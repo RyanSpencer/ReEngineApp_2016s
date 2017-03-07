@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DAD85B3D-ABA2-4B83-85BB-4DE0BD2C1749}</ProjectGuid>
-    <RootNamespace>E06_Lerp</RootNamespace>
-    <ProjectName>E06_Lerp</ProjectName>
+    <ProjectGuid>{DBB63B9E-3E43-4E40-8601-29BE9FAC2ABD}</ProjectGuid>
+    <RootNamespace>W5R_Rotations_DEMO</RootNamespace>
+    <ProjectName>W5R_Rotations_DEMO</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

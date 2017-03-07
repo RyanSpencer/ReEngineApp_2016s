@@ -1,7 +1,7 @@
 #include "AppClass.h"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("Sandbox"); // Window Name
+	super::InitWindow("W5R_Rotations_DEMO"); // Window Name
 
 	// Set the clear color based on Microsoft's CornflowerBlue (default in XNA)
 	//if this line is in Init Application it will depend on the .cfg file, if it
@@ -17,32 +17,12 @@ void AppClass::InitVariables(void)
 	//Reset the selection to -1, -1
 	m_selection = std::pair<int, int>(-1, -1);
 	//Set the camera position
-	/*m_pCameraMngr->SetPositionTargetAndView(
+	m_pCameraMngr->SetPositionTargetAndView(
 		vector3(0.0f, 2.5f, 15.0f),//Camera position
 		vector3(0.0f, 2.5f, 0.0f),//What Im looking at
 		REAXISY);//What is up
-	*/
-	m_pCameraMngr->SetPosition(vector3(0.0f, 0.0f, 35.0f));
-
-	srand(time(NULL));
-	m_nObjects = rand() % 23 + 5;
-
-	vector3 v3Start = vector3(-m_nObjects, 0.0f, 0.0f);
-	vector3 v3End = vector3(m_nObjects, 0.0f, 0.0f);
-
-	m_pSphere = new PrimitiveClass[m_nObjects];
-	m_pMatrix = new matrix4[m_nObjects];
-
-	for (int i = 0; i < m_nObjects; i++) {
-		float fPercent = MapValue(static_cast<float>(nSphere), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
-		PrimitiveClass* myPrim = new PrimitiveClass();
-		myPrim->GenerateSphere(1.0f, 5, vector3(fPercent, 0.0f, 0.0f));
-		m_pSphere[i] = *myPrim;
-		vector3 lerped = vector3(v3Start.y + (v3End.y - v3Start.y) * ((fPercent - v3Start.x) / (v3End.x - v3Start.x)), 0.0f, 0.0f);
-		m_pMatrix[i] = glm::translate(IDENTITY_M4, lerped);
-	}
 	//Load a model onto the Mesh manager
-	m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
+	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 }
 
 void AppClass::Update(void)
@@ -61,8 +41,15 @@ void AppClass::Update(void)
 	ArcBall();
 	
 	//Set the model matrix for the first model to be the arcball
-	m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
-	
+	//m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
+
+	//m_m4Steve = glm::scale(m_m4Steve, vector3(1.01f, 1.01f, 1.01f));
+	//m_m4Steve = glm::rotate(m_m4Steve, 1.0f, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Steve = glm::rotate(IDENTITY_M4, m_v3Orientation.x, vector3(1.0f, 0.0f, 0.0f));
+	m_m4Steve = glm::rotate(m_m4Steve, m_v3Orientation.y, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Steve = glm::rotate(m_m4Steve, m_v3Orientation.z, vector3(0.0f, 0.0f, 1.0f));
+	m_pMeshMngr->SetModelMatrix(m_m4Steve, "Steve");
+
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddSkyboxToRenderList();
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
@@ -72,6 +59,7 @@ void AppClass::Update(void)
 	//print info into the console
 	//printf("FPS: %d            \r", nFPS);//print the Frames per Second
 	//Print info on the screen
+	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 
 	m_pMeshMngr->Print("Selection: ");
@@ -85,14 +73,6 @@ void AppClass::Display(void)
 {
 	//clear the screen
 	ClearScreen();
-
-	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
-	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
-	for (int i = 0; i < m_nObjects; i++) {
-		PrimitiveClass* sphere = &m_pSphere[i];
-		sphere->Render(m4Projection, m4View, m_pMatrix[i]);
-	}
-	
 	//Render the grid based on the camera's mode:
 	//m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
 	m_pMeshMngr->Render(); //renders the render list
@@ -102,7 +82,5 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
-	SafeDelete(m_pSphere);
-	SafeDelete(m_pMatrix);
 	super::Release(); //release the memory of the inherited fields
 }
