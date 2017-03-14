@@ -43,8 +43,8 @@ void AppClass::Update(void)
 	//Set the model matrix for the first model to be the arcball
 	//m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
 
-	//m_m4Steve = glm::scale(m_m4Steve, vector3(1.01f, 1.01f, 1.01f));
-	//m_m4Steve = glm::rotate(m_m4Steve, 1.0f, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Steve = glm::scale(m_m4Steve, vector3(1.01f, 1.01f, 1.01f));
+	m_m4Steve = glm::rotate(m_m4Steve, 1.0f, vector3(0.0f, 1.0f, 0.0f));
 	m_m4Steve = glm::rotate(IDENTITY_M4, m_v3Orientation.x, vector3(1.0f, 0.0f, 0.0f));
 	m_m4Steve = glm::rotate(m_m4Steve, m_v3Orientation.y, vector3(0.0f, 1.0f, 0.0f));
 	m_m4Steve = glm::rotate(m_m4Steve, m_v3Orientation.z, vector3(0.0f, 0.0f, 1.0f));
