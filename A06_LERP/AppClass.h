@@ -13,6 +13,9 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 	float fDuration = 1.0f; //Time Duration of the stops
+	vector3* lerpPoints = nullptr; //Points that the model must touch
+	matrix4* sphereMat = nullptr; //Sphere matrices
+	int loopNum = 0; //Number of points which have been touched
 public:
 	typedef ReEngAppClass super;
 	/*
