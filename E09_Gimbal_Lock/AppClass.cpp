@@ -30,8 +30,13 @@ void AppClass::Update(void)
 	matrix4 rotY = glm::rotate(IDENTITY_M4, m_v3Orientation.y, REAXISY);
 	matrix4 rotZ = glm::rotate(IDENTITY_M4, m_v3Orientation.z, REAXISZ);
 
+
+	glm::quat myQuanternion = glm::quat(vector3(m_v3Orientation.x * (PI / 180), m_v3Orientation.y * (PI / 180), m_v3Orientation.z * (PI / 180)));
+
+	m_mToWorld = ToMatrix4(myQuanternion);
+
 	//linear combination
-	m_mToWorld = rotX * rotY * rotZ;
+	//m_mToWorld = rotX * rotY * rotZ;
 
 	//Setting the model matrix
 	m_pMeshMngr->SetModelMatrix(m_mToWorld, "Steve");
