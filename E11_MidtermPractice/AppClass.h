@@ -13,6 +13,9 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 	matrix4 m_m4Steve = IDENTITY_M4;
+	bool reverse = false;
+	int loop = 0;
+	int totalLoop = 0;
 public:
 	typedef ReEngAppClass super;
 

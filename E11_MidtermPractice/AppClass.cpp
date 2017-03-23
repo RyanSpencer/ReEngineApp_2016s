@@ -15,7 +15,30 @@ void AppClass::Update(void)
 	dTotalTime += dDeltaTime; //Incrementing the time differences 
 #pragma endregion
 #pragma region YOUR CODE GOES HERE
-	m_m4Steve = glm::mat4(1.0f); // same as m_m4Steve = IDENTITY_M4; setting the identity to steve
+	//total loop is the amount of degrees that each loop should increase based on the amount of time it takes to compelte a loop divided by the time each loop takes
+	totalLoop = 360/ (5.0f / dDeltaTime);
+	//Add it to loop per each loop
+	loop += totalLoop;
+	//Reset after 360
+	if (loop > 360) {
+		loop = 0;
+	}
+	if (dTotalTime > 5) {
+		dTotalTime = 0;
+		if (!reverse) reverse = true;
+		else reverse = false;
+	}
+	float fpercent = MapValue((float)(dTotalTime / dDeltaTime), 0.0f, (float)(5.0f / dDeltaTime), 0.0f, 1.0f);
+	vector3 lerpedVec;
+	if (!reverse) {
+		lerpedVec = glm::lerp(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 5.0f, 0.0f), fpercent);
+	}
+	else {
+		lerpedVec = glm::lerp(vector3(0.0f, 5.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), fpercent);
+	}
+	m_m4Steve = glm::rotate((float)(loop), REAXISZ) * glm::translate(lerpedVec);
+
+	//m_m4Steve = glm::mat4(1.0f); // same as m_m4Steve = IDENTITY_M4; setting the identity to steve
 #pragma endregion
 #pragma region DOES NOT NEED CHANGES
 	//Set the model matrix
