@@ -13,21 +13,51 @@ void AppClass::InitVariables(void)
 	m_pMesh = new MyMesh();
 	
 	//Creating the Mesh points
-	m_pMesh->AddVertexPosition(vector3(-1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
+	m_pMesh->AddVertexPosition(vector3(0.0f, 0.0f, 0.0f));
 	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3(1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, 1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
+	m_pMesh->AddVertexPosition(vector3(-0.5f,  -1.0f, 0.0f));
+	m_pMesh->AddVertexColor(REGREEN);
+	m_pMesh->AddVertexPosition(vector3(0.5f, -1.0f, 0.0f));
+	m_pMesh->AddVertexColor(RERED);
+
+	int a[30][30]; // rows then collumns
+	int i, j; 
+	int size = 30;
+
+	for (i = 0; i < size; i++) {
+		for (j = 0; j < size; j++) {
+			a[i][j] = 0;
+		}
+	}
+
+	//First of each row should be 1
+	for (i = 0; i <= size; i++) {
+		a[i][0] = 1;
+	}
+
+	//Generate the full Triangle
+	for (i = 1; i <= size; i++) {
+		for (j = 1; j <= size - i; j++) {
+			//Else the point = the left one and the top one
+			a[i][j] = a[i - 1][j] + a[i - 1][j - 1];
+		}
+	}
 
 	//Compiling the mesh
 	m_pMesh->CompileOpenGL3X();
+
+	m_fMatrixArray = new float[m_nObjects * 16];
+	int k = 1;
+
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 30; j++) {
+			if (a[i][j] % 2 != 0) {
+					const float* m4MVP = glm::value_ptr(glm::translate(vector3(1.0f * (((-0.5f * i) + j)) , 1.0f * -i, 0.0f)));
+					memcpy(&m_fMatrixArray[k * 16], m4MVP, 16 * sizeof(float));
+					k++;
+			}
+		}
+	}
 }
 
 void AppClass::Update(void)
@@ -65,8 +95,9 @@ void AppClass::Display(void)
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
 
-	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObject(s)											   //clear the screen
-	
+	m_pMesh->RenderList(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), m_fMatrixArray, m_nObjects);//Rendering nObjects
+
+	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
