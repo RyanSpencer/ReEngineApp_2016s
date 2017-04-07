@@ -1,4 +1,6 @@
 #include "AppClass.h"
+CameraManager* CameraManager::m_pInstance = nullptr;
+
 void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("E10_Projections"); // Window Name
