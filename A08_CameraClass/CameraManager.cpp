@@ -57,13 +57,12 @@ void CameraManager::ChangePitch(float fIncrement)
 
 void CameraManager::ChangeRoll(float fIncrement)
 {
-	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0, 1.0f, 0.0f)));
+	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0, 0.0f, 1.0f)));
 }
 
 void CameraManager::ChangeYaw(float fIncrement)
 {
-
-	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0f, 0.0f, 1.0f)));
+	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0f, 1.0f, 0.0f)));
 }
 
 CameraManager::CameraManager(void)
