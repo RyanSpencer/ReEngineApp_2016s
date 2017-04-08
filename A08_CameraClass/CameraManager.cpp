@@ -2,7 +2,8 @@
 
 matrix4 CameraManager::getView(void)
 {
-	viewMatrix = glm::lookAt(eye, center, up);
+	viewMatrix = rotationMatrix;
+	viewMatrix *= glm::lookAt(eye, center, up);
 	return viewMatrix;
 }
 
@@ -51,17 +52,18 @@ void CameraManager::MoveVertical(float fIncrement)
 
 void CameraManager::ChangePitch(float fIncrement)
 {
-	viewMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(1.0f, 0.0f, 0.0f)));
+	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(1.0f, 0.0f, 0.0f)));
 }
 
 void CameraManager::ChangeRoll(float fIncrement)
 {
-	viewMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0, 1.0f, 0.0f)));
+	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0, 1.0f, 0.0f)));
 }
 
 void CameraManager::ChangeYaw(float fIncrement)
 {
-	viewMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0f, 0.0f, 1.0f)));
+
+	rotationMatrix *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0.0f, 0.0f, 1.0f)));
 }
 
 CameraManager::CameraManager(void)
@@ -80,9 +82,10 @@ void CameraManager::Release(void)
 
 void CameraManager::Init(void)
 {
-	viewMatrix = matrix4();
+	viewMatrix = IDENTITY_M4;
 	ortholgicalMatrix = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, 0.01f, 1000.0f);
 	perspectiveMatrix = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
+	rotationMatrix = IDENTITY_M4;
 	eye = vector3(0.0f, 0.0f, 0.0f);
 	center = vector3(0.0f, 0.0f, 0.0f);
 	up = vector3(0.0f, 0.0f, 0.0f);

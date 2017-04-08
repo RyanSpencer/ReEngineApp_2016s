@@ -90,6 +90,8 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void Release(void) final;
+
+	void RotateCam();
 };
 
 #endif //__APPLICATION_H_

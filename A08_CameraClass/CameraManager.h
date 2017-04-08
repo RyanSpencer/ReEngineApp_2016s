@@ -41,6 +41,8 @@ private:
 
 	matrix4 perspectiveMatrix;
 
+	matrix4 rotationMatrix;
+
 	vector3 eye;
 	
 	vector3 center;

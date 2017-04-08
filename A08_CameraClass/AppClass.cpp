@@ -33,7 +33,7 @@ void AppClass::Update(void)
 
 	//First person camera movement
 	if (m_bFPC == true)
-		CameraRotation();
+		RotateCam();
 
 	//Getting the time between calls
 	double fCallTime = m_pSystem->LapClock();
@@ -41,6 +41,53 @@ void AppClass::Update(void)
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
 
+}
+void AppClass::RotateCam()
+{
+
+	int MouseX, MouseY;	
+	int CenterX, CenterY;
+
+	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
+	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
+
+	//Calculate the position of the mouse and store it
+	POINT pt;
+	GetCursorPos(&pt);
+	MouseX = pt.x;
+	MouseY = pt.y;
+
+	//Calculate the difference in view with the angle
+	float fAngleX = 0.0f;
+	float fAngleY = 0.0f;
+	float fDeltaMouse = 0.0f;
+	float a_fSpeed = 0.005f;
+
+	if (MouseX < CenterX)
+	{
+		fDeltaMouse = static_cast<float>(CenterX - MouseX);
+		fAngleY += fDeltaMouse * a_fSpeed;
+	}
+	else if (MouseX > CenterX)
+	{
+		fDeltaMouse = static_cast<float>(MouseX - CenterX);
+		fAngleY -= fDeltaMouse * a_fSpeed;
+	}
+
+	if (MouseY < CenterY)
+	{
+		fDeltaMouse = static_cast<float>(CenterY - MouseY);
+		fAngleX -= fDeltaMouse * a_fSpeed;
+	}
+	else if (MouseY > CenterY)
+	{
+		fDeltaMouse = static_cast<float>(MouseY - CenterY);
+		fAngleX += fDeltaMouse * a_fSpeed;
+	}
+	//Change the Yaw and the Pitch of the camera
+	m_pCamera->ChangeRoll(-fAngleY * 3.0f);
+	m_pCamera->ChangePitch(fAngleX * 3.0f);
+	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 
 void AppClass::Display(void)
