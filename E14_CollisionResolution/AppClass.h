@@ -21,6 +21,8 @@ class AppClass : public ReEngAppClass
 	MyEntityClass* m_pBoxR = nullptr;
 	MyEntityClass* m_pPalletL = nullptr;
 	MyEntityClass* m_pPalletR = nullptr;
+	int L = 0;
+	int R = 0;
 
 public:
 	typedef ReEngAppClass super;

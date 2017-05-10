@@ -26,7 +26,7 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCuboid(vector3(1, 11, 1), REGREEN, "BoxR");
 	
 	m_pMeshMngr->InstanceCuboid(vector3(0.5, 3, 0.5), REBLUE, "PalletL");
-	m_pMeshMngr->InstanceCuboid(vector3(0.5, 3, 0.5), REBLUE, "PalletR");
+	m_pMeshMngr->InstanceCuboid(vector3(0.5, 3, 0.5), REYELLOW, "PalletR");
 
 	//Create game objects based on the loaded objects
 	m_pBall = new MyEntityClass("Ball");
@@ -45,6 +45,10 @@ void AppClass::InitVariables(void)
 	m_pBoxT->SetModelMatrix(glm::translate(vector3(0, 5, 0)));
 	m_pBoxB->SetModelMatrix(glm::translate(vector3(0, -5, 0)));
 	m_pBoxR->SetModelMatrix(glm::translate(vector3(10.5, 0, 0)));
+	m_pBoxL->SetModelMatrix(glm::translate(vector3(-10.5f, 0, 0)));
+
+	m_pPalletL->SetModelMatrix(glm::translate(vector3(-9.5f, 0, 0)));
+	m_pPalletR->SetModelMatrix(glm::translate(vector3(9.5f, 0, 0)));
 }
 
 void AppClass::Update(void)
@@ -66,7 +70,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), "All");
 
 	m_pBall->Update();
-	if (m_pBall->IsColliding(m_pBoxT))
+	if (m_pBall->IsColliding(m_pBoxT) || m_pBall->IsColliding(m_pBoxB))
 	{
 		vector3 v3Velocity = m_pBall->GetVelocity();
 		v3Velocity.y *= -1;
@@ -74,6 +78,16 @@ void AppClass::Update(void)
 	}
 	if (m_pBall->IsColliding(m_pBoxR))
 	{
+		L++;
+		m_pBall->SetModelMatrix(glm::translate(vector3(0, 0, 0)));
+		m_pBall->SetVelocity(vector3(-0.11f, -0.11f, 0.0f));
+	}
+	else if (m_pBall->IsColliding(m_pBoxL)) {
+		R++;
+		m_pBall->SetModelMatrix(glm::translate(vector3(0, 0, 0)));
+		m_pBall->SetVelocity(vector3(0.11f, 0.11f, 0.0f));
+	}
+	if (m_pBall->IsColliding(m_pPalletL) || m_pBall->IsColliding(m_pPalletR)) {
 		vector3 v3Velocity = m_pBall->GetVelocity();
 		v3Velocity.x *= -1;
 		m_pBall->SetVelocity(v3Velocity);
@@ -97,7 +111,12 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(m_pMeshMngr->GetInstanceGroupName(m_selection.first, m_selection.second), REYELLOW);
 	
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+	m_pMeshMngr->PrintLine(std::to_string(nFPS), RERED);
+
+	m_pMeshMngr->Print("L: ");
+	m_pMeshMngr->PrintLine(std::to_string(L), REBLUE);
+	m_pMeshMngr->Print("R: ");
+	m_pMeshMngr->PrintLine(std::to_string(R), REYELLOW);
 }
 
 void AppClass::Display(void)
